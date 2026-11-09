@@ -1,0 +1,24 @@
+services:
+  submatch:
+    build: .
+    image: submatch:1.0
+    container_name: submatch
+    restart: unless-stopped
+    user: "1000:1001"          # 与飞牛媒体属主一致
+    ports:
+      - "8099:8099"            # 浏览器访问 http://NAS_IP:8099
+    environment:
+      TZ: Asia/Shanghai
+      ASSRT_TOKEN: "把这里换成你的 32 位 Token"
+      WATCH_DIRS: "/media/movie:/media/tv"   # 容器内路径，冒号分隔
+      INTERVAL_MINUTES: "360"                # 自动扫描间隔（分钟）
+      RUN_ON_START: "1"
+      PREFER: "zh"                           # zh / bi / any
+      LANG_TAG: "zh"
+      OVERWRITE: "0"
+      ONLY_MISSING: "1"                      # 1=只列缺字幕的
+      MAX_PER_RUN: "0"
+      WEB_PORT: "8099"
+    volumes:
+      - /vol3/1000/Data/Nas_tool:/media      # 左边改 NAS 真实路径
+      - /vol1/1000/docker/submatch/config:/config
